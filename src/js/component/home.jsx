@@ -1,26 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
+import Task from "./Task";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
-//create your first component
-const Home = () => {
-	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+const ToDoList = () => {  
+  const [newTask, setNewTask] = useState("");    
+  const [taskList, setTasklist] = useState([]);
+  return (
+    <div className="container text-center border col-6 bg-light">
+      <h1 className="display-1 text-muted">todos</h1> 
+      <input className="col-12 rounded border-secondary-subtle" type="text" value={newTask} placeholder="What do you want to do next?" 
+	  onChange={(event) => setNewTask(event.target.value)} 
+	  onKeyUp={(event) => {
+		if (event.key == "Enter"){   
+			setTasklist([newTask, ...taskList])
+			setNewTask("")
+		} }}/>
+		
+    {(taskList.length == 0) && <div className="fw-lighter">no tasks, add a task</div> }
+    {taskList.map( (tarea, indice)=> <Task task={tarea} key={indice} onRemove={()=>{
+      setTasklist(taskList.filter((_tarea, borrar)=> indice != borrar))
+    }}/>)}
+    <p>{taskList.length} items left</p>
+	</div>
+  );
 };
 
-export default Home;
+export default ToDoList;
